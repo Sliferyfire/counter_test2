@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "288372919139",
+    "firebase_url": "https://countertest-84123-default-rtdb.firebaseio.com",
+    "project_id": "countertest-84123",
+    "storage_bucket": "countertest-84123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288372919139:android:ed7d8717e239b7d002a156",
+        "android_client_info": {
+          "package_name": "com.example.counter_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288372919139-jjgciavu8768ga5q4p747ddosb243at6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm3lh-MSulZbmZrtrbR2YLSLlRDoagJxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288372919139-jjgciavu8768ga5q4p747ddosb243at6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "288372919139-9a5ck7bd60686pvs6ks87cv0i7e5bds6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.counterTest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
