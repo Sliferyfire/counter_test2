@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:288372919139:android:ed7d8717e239b7d002a156",
+        "mobilesdk_app_id": "1:288372919139:android:29693ce02f1efb9102a156",
         "android_client_info": {
-          "package_name": "com.example.counter_test"
+          "package_name": "com.example.counter_test2"
         }
       },
       "oauth_client": [
@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "288372919139-9a5ck7bd60686pvs6ks87cv0i7e5bds6.apps.googleusercontent.com",
+              "client_id": "288372919139-5c54adh8ifjibjcqhmlo7cfjcm87okso.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.counterTest"
+                "bundle_id": "com.example.counterTest2.RunnerTests"
               }
             }
           ]
