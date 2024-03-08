@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 //final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -49,22 +50,94 @@ Future<void> signInWithEmailAndPassword(
   }
 }
 
-Future<UserCredential> signInWithGoogle() async {
+// Future<UserCredential> signInWithGoogle() async {
+//   // Trigger the authentication flow
+//   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+//   // Obtain the auth details from the request
+//   final GoogleSignInAuthentication? googleAuth =
+//       await googleUser?.authentication;
+
+//   // Create a new credential
+//   final credential = GoogleAuthProvider.credential(
+//     accessToken: googleAuth?.accessToken,
+//     idToken: googleAuth?.idToken,
+//   );
+
+//   // Once signed in, return the UserCredential
+//   return await FirebaseAuth.instance.signInWithCredential(credential);
+// }
+
+Future<void> signInWithGoogle(BuildContext context) async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+  if (googleUser != null) {
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
-  // Create a new credential
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
 
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance.signInWithCredential(credential);
+    // Sign in to Firebase with the credential
+    try {
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Check if the user is signed in
+      if (userCredential.user != null) {
+        // Navigate to another page
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const HomePage()), // Reemplaza 'OtraPagina()' con la página a la que quieres dirigir al usuario
+        );
+      }
+    } catch (e) {
+      // Handle any errors that occur during sign in
+      print("Error durante el inicio de sesión con Google: $e");
+      // Puedes mostrar un mensaje de error al usuario si lo deseas
+    }
+  } else {
+    // El usuario canceló el inicio de sesión con Google
+    print("Inicio de sesión con Google cancelado por el usuario");
+    // Puedes mostrar un mensaje al usuario si lo deseas
+  }
+}
+
+Future<void> signInWithFacebook(BuildContext context) async {
+  // Trigger the sign-in flow
+  final LoginResult loginResult = await FacebookAuth.instance.login();
+
+  // Verifica si el inicio de sesión con Facebook fue exitoso
+  if (loginResult.status == LoginStatus.success) {
+    // Crea una credencial a partir del token de acceso
+    final AccessToken accessToken = loginResult.accessToken!;
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(accessToken.token);
+
+    // Una vez que se haya iniciado sesión correctamente, regresa el UserCredential
+    final UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(facebookAuthCredential);
+
+    // Redirige a otra página usando la navegación de Flutter
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              const HomePage()), // Reemplaza 'OtraPagina()' con la página a la que quieres dirigir al usuario
+    ); // Cambia '/otra_pagina' por la ruta de la página a la que deseas redirigir
+  } else {
+    // Si el inicio de sesión no fue exitoso, maneja el error o muestra un mensaje al usuario
+    print('Error al iniciar sesión con Facebook');
+  }
 }
 
 class LoginPage extends StatefulWidget {
@@ -320,8 +393,8 @@ class Botones extends StatelessWidget {
           width: double.infinity,
           height: 50,
           child: OutlinedButton(
-              onPressed: () {
-                signInWithGoogle();
+              onPressed: () async {
+                await signInWithGoogle(context);
               },
               child: const Text(
                 'Google',
@@ -337,7 +410,9 @@ class Botones extends StatelessWidget {
           width: double.infinity,
           height: 50,
           child: OutlinedButton(
-              onPressed: () => {},
+              onPressed: () async {
+                await signInWithFacebook(context);
+              },
               child: const Text(
                 'Facebook',
                 style: TextStyle(
